@@ -66,6 +66,12 @@ public class HttpActionConfig extends PluginConfig implements IHttpConfig {
   @Macro
   protected String requestBody;
 
+  @Name(HttpConstants.PROPERTY_PREEMPTIVE_BASIC_AUTH)
+  @Description("If true, basic authentication will be performed in preemptive mode, " +
+          "without additional negotiation request.")
+  @Macro
+  protected String preemptiveBasicAuth;
+
   @Nullable
   @Name(HttpConstants.PROPERTY_USERNAME)
   @Description("Username for basic authentication.")
@@ -253,6 +259,11 @@ public class HttpActionConfig extends PluginConfig implements IHttpConfig {
   @Nullable
   public String getRequestBody() {
     return requestBody;
+  }
+
+  @Override
+  public Boolean getPreemptiveBasicAuth() {
+    return Boolean.parseBoolean(preemptiveBasicAuth);
   }
 
   @Override

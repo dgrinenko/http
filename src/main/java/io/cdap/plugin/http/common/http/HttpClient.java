@@ -22,11 +22,15 @@ import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.AuthCache;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -36,6 +40,7 @@ import org.apache.http.message.BasicHeader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -48,6 +53,7 @@ public class HttpClient implements Closeable {
   private final IHttpConfig config;
   private final StringEntity requestBody;
   private CloseableHttpClient httpClient;
+  private HttpClientContext localContext;
 
   public HttpClient(IHttpConfig config) {
     this.config = config;
@@ -81,7 +87,7 @@ public class HttpClient implements Closeable {
       request.setEntity(requestBody);
     }
 
-    return httpClient.execute(request);
+    return localContext == null ? httpClient.execute(request) : httpClient.execute(request, localContext);
   }
 
   @Override
@@ -106,11 +112,22 @@ public class HttpClient implements Closeable {
 
     // basic auth
     CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+    localContext = HttpClientContext.create();
+
     if (!Strings.isNullOrEmpty(config.getUsername()) && !Strings.isNullOrEmpty(config.getPassword())) {
+      URL targetURL = new URL(config.getUrl());
+      HttpHost targetHost = new HttpHost(targetURL.getHost(), targetURL.getPort(), targetURL.getProtocol());
+
       credentialsProvider.setCredentials(
-        new AuthScope(HttpHost.create(config.getUrl())),
-        new UsernamePasswordCredentials(config.getUsername(), config.getPassword())
+              new AuthScope(targetHost),
+              new UsernamePasswordCredentials(config.getUsername(), config.getPassword())
       );
+      if (config.getPreemptiveBasicAuth()) {
+        AuthCache authCache = new BasicAuthCache();
+        authCache.put(targetHost, new BasicScheme());
+
+        localContext.setAuthCache(authCache);
+      }
     }
 
     // proxy and proxy auth

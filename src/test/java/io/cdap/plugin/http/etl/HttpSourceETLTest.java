@@ -487,6 +487,7 @@ public abstract class HttpSourceETLTest extends HydratorTestBase {
     return new ImmutableMap.Builder<String, String>()
       .put("referenceName", testName.getMethodName())
       .put(HttpConstants.PROPERTY_HTTP_METHOD, "GET")
+      .put(HttpConstants.PROPERTY_PREEMPTIVE_BASIC_AUTH, "false")
       .put(HttpConstants.PROPERTY_OAUTH2_ENABLED, "false")
       .put(HttpConstants.PROPERTY_HTTP_ERROR_HANDLING, "2..:Success,.*:Fail")
       .put(HttpConstants.PROPERTY_ERROR_HANDLING, "stopOnError")

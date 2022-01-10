@@ -37,6 +37,8 @@ public interface IHttpConfig {
   @Nullable
   String getRequestBody();
 
+  Boolean getPreemptiveBasicAuth();
+
   @Nullable
   String getUsername();
 
