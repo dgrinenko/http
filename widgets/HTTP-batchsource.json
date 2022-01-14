@@ -157,6 +157,22 @@
       "label": "Basic Authentication",
       "properties": [
         {
+          "widget-type": "toggle",
+          "label": "Preemptive basic authentication",
+          "name": "preemptiveBasicAuth",
+          "widget-attributes": {
+            "default": "false",
+            "on": {
+              "label": "True",
+              "value": "true"
+            },
+            "off": {
+              "label": "False",
+              "value": "false"
+            }
+          }
+        },
+        {
           "widget-type": "textbox",
           "label": "Username",
           "name": "username"

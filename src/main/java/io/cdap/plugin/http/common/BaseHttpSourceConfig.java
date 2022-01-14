@@ -119,6 +119,12 @@ public abstract class BaseHttpSourceConfig extends ReferencePluginConfig impleme
   @Macro
   protected String csvSkipFirstRow;
 
+  @Name(HttpConstants.PROPERTY_PREEMPTIVE_BASIC_AUTH)
+  @Description("If true, basic authentication will be performed in preemptive mode, " +
+          "without additional negotiation request.")
+  @Macro
+  protected String preemptiveBasicAuth;
+
   @Nullable
   @Name(HttpConstants.PROPERTY_USERNAME)
   @Description("Username for basic authentication.")
@@ -401,6 +407,11 @@ public abstract class BaseHttpSourceConfig extends ReferencePluginConfig impleme
 
   public Boolean getCsvSkipFirstRow() {
     return Boolean.parseBoolean(csvSkipFirstRow);
+  }
+
+  @Override
+  public Boolean getPreemptiveBasicAuth() {
+    return Boolean.parseBoolean(preemptiveBasicAuth);
   }
 
   @Nullable

@@ -209,6 +209,9 @@ can be omitted as long as the field is present in schema.
 
 ### Basic Authentication
 
+**Preemptive basic authentication:** If true, basic authentication will be performed in preemptive mode,
+without additional negotiation request.
+
 **Username:** Username for basic authentication.
 
 **Password:** Password for basic authentication.

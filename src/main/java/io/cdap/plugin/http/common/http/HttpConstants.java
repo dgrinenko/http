@@ -31,6 +31,7 @@ public final class HttpConstants {
   public static final String PROPERTY_HEADERS = "headers";
   public static final String PROPERTY_REQUEST_BODY = "requestBody";
   public static final String PROPERTY_USERNAME = "username";
+  public static final String PROPERTY_PREEMPTIVE_BASIC_AUTH = "preemptiveBasicAuth";
   public static final String PROPERTY_PASSWORD = "password";
   public static final String PROPERTY_PROXY_URL = "proxyUrl";
   public static final String PROPERTY_PROXY_USERNAME = "proxyUsername";

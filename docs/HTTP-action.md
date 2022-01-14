@@ -21,6 +21,9 @@ The url must start with a protocol (e.g. http://).
 
 ### Basic Authentication
 
+**Preemptive basic authentication:** If true, basic authentication will be performed in preemptive mode, 
+without additional negotiation request.
+
 **Username:** Username for basic authentication.
 
 **Password:** Password for basic authentication.
